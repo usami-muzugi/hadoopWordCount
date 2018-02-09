@@ -25,7 +25,9 @@ public class Test {
         System.out.println("开始时间:"+simpleDateFormat.format(new Date()));
 
         //获取文件
-        File fileTmallGoodsComment = new File("C:\\Users\\wizard\\IdeaProjects\\hadoopWordCount\\src\\main\\java\\wiki\\conoha\\hadoop\\tmall_goods_comment.xls");
+        String path = "C:\\Users\\wizard\\IdeaProjects\\hadoopWordCount\\src\\main\\java\\wiki\\conoha\\hadoop\\";
+        String fileName = "tmall_goods_stock.xls";
+        File fileTmallGoodsComment = new File(path+fileName);
         if (!fileTmallGoodsComment.exists()) {
             System.out.println("file is not exists!");
         }
@@ -38,7 +40,7 @@ public class Test {
             Workbook workbook = Workbook.getWorkbook(bufferedInputStream);
             //获取一下那个Sheet的第一页
             Sheet sheet = workbook.getSheet(0);
-            File outputFile = new File("C:\\Users\\wizard\\IdeaProjects\\hadoopWordCount\\src\\main\\java\\wiki\\conoha\\hadoop\\tmall_goods_comment.txt");
+            File outputFile = new File(path + fileName.substring(0, fileName.length() - 3)+"txt");
             FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             // j为行数，getCell("列号","行号")
@@ -48,6 +50,9 @@ public class Test {
                 for(int x=0; x<y; x++){
                     Cell c = sheet.getCell(x, i);
                     String s = c.getContents();
+                    if (s.equals("")) {
+                        s = "Null";  //有些行可能回没有数据，但是要给他留个位置嘛
+                    }
                     bufferedWriter.write(s);
                     //这里就加个 | 好啦
                     bufferedWriter.write("|");
